@@ -1,0 +1,21 @@
+<form action="/login/" method="post" autocomplete="off">
+    {% csrf_token %}
+    
+    <input  name="username" placeholder="username">  </input>
+    <input  type="password" name="password" placeholder="password">   </input>
+    <input type="submit" value="Submit" onclick="updateHiddenInput('submit')">
+    <input type="submit" value="Signin" onclick="updateHiddenInput('signin')">
+    <input type="hidden" id="button_clicked" name="button_clicked" value="">
+</form>
+<script>
+    function updateHiddenInput(buttonValue) {
+        document.getElementById("button_clicked").value = buttonValue;
+    }
+</script>
+{% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </ul>
+{% endif %}
