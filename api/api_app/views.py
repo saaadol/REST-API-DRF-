@@ -1,10 +1,28 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view 
 from .models import Data
-from .serializers import DataSerializer
+from .serializers import DataSerializer, TodoSerializer
+from rest_framework.exceptions import NotFound
 
 
 @api_view(["GET"])
+def getTodos(request, pk):
+    try:
+        data = Data.objects.get(pk=pk)
+    except Data.DoesNotExist:
+        raise NotFound("key not found")
+    todos = data.todos.all()
+    todos_list = []
+    for todo in todos:
+        print("BLABLA")
+        todo_values = {
+            'todoName': todo.todoName,
+            'description': todo.description,
+            'isCompleted': todo.isCompleted,
+        }
+        todos_list.append(todo_values)
+    return Response(todos_list)
+
 def getData(request):
     data = Data.objects.all()
     serializer = DataSerializer(data, many = True)
@@ -13,6 +31,15 @@ def getData(request):
 @api_view(["POST"])   
 def PostData(request): 
     serializer = DataSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
+
+#Todo
+@api_view(["POST"])   
+def PostTodo(request): 
+    serializer = TodoSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)

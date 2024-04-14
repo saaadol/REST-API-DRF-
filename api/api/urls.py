@@ -16,19 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api_app.views import getData, PostData,PostDataId, DeleteDataId, DeleteAll
+from api_app.views import getData,getTodos, PostData,PostDataId, DeleteDataId, DeleteAll, PostTodo
 from todo_app.views import homepage, login , signin
 from rest_framework_simplejwt import  views as jwt_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/all/', getData),
+    path('api/all/<int:pk>/', getTodos),
 
     path('signin/', signin),   
     path('login/', login),
     path('home/', homepage, name="home"),
 
     path('api/insert/', PostData),
+    path('api/insert/todo/', PostTodo),
     path('api/insert/<int:pk>/', PostDataId),
     path('api/delete/<int:pk>/', DeleteDataId),
     path('api/delete/all/', DeleteAll),
