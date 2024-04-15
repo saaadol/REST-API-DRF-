@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from .models import Data
 from .serializers import DataSerializer, TodoSerializer
 from rest_framework.exceptions import NotFound
-
+from rest_framework.renderers import JSONRenderer
 
 @api_view(["GET"])
 def getTodos(request, pk):
@@ -14,7 +14,6 @@ def getTodos(request, pk):
     todos = data.todos.all()
     todos_list = []
     for todo in todos:
-        print("BLABLA")
         todo_values = {
             'todoName': todo.todoName,
             'description': todo.description,
@@ -23,6 +22,7 @@ def getTodos(request, pk):
         todos_list.append(todo_values)
     return Response(todos_list)
 
+@api_view(["GET"])
 def getData(request):
     data = Data.objects.all()
     serializer = DataSerializer(data, many = True)

@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/insert/<int:pk>/', PostDataId),
     path('api/delete/<int:pk>/', DeleteDataId),
     path('api/delete/all/', DeleteAll),
-
+    
     path('api/token/', jwt_views.TokenObtainPairView.as_view()),
     path('api/refresh/', jwt_views.TokenRefreshView.as_view()),
     path('api/verify/', jwt_views.TokenVerifyView.as_view()),
