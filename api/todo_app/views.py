@@ -19,17 +19,16 @@ def returnToken(Cookies):
         }
     yield token
     yield isnotAccess
+
 def isAuthenticated(request, path, isRender): #isAuthenticated
     if  request.COOKIES.get("refresh") == None: 
         return False
-    
     tokenEndpoint = request.META["HTTP_HOST"]
     tokenObject = returnToken(request.COOKIES)
     token = next(tokenObject)
-    isValid =  requests.post(f"http://{tokenEndpoint}/api/verify/", json=token)
+    isValid =  requests.post(f"http://{tokenEndpoint}/api/verify/", json=token) #checking if token is Valid
     if isValid.status_code != 200:
         return False
-    
     if next(tokenObject) == 1: #next(tokenObject) its the isnotAccess flag
         if isRender:            
             httpResponse = render(request,path) 
@@ -55,38 +54,31 @@ def setTokens(request,tokenEndpoint,creds):
     httpResponse.set_cookie("access", getTokens["access"])
     return httpResponse
 
-
 def login(request):
     if isAuthenticated(request,"/home", False) != False:
         return isAuthenticated(request,"/home", False)
     if request.method == "POST":
-        submit_type = request.POST.get('button_clicked')
-        if submit_type == "signin":
+        if request.POST.get('button_clicked') == "signin":
             return redirect("/signin")
-        login_data= request.POST.dict()
-        username = login_data.get("username")
-        password = login_data.get("password")
+        login_data = request.POST.dict()
         creds = {
-            "username" : username,
-            "password" : password, 
+            "username" : login_data.get("username"),
+            "password" : login_data.get("password"), 
         }
-        tokenEndpoint = request.META["HTTP_ORIGIN"]
-        httpResponse = setTokens(request,tokenEndpoint, creds)
+        httpResponse = setTokens(request, request.META["HTTP_ORIGIN"], creds) # request.META["HTTP_ORIGIN"] = 127.0.0.1:8000
         return httpResponse
     return render(request, "login.html", {})
-
 
 def homepage(request):
     if isAuthenticated(request, "/login", False) == False:
         return redirect("/login")
     if request.method == "POST":
         httpResponse = redirect("/login")
-        httpResponse.delete_cookie("refresh")
+        httpResponse.delete_cookie("refresh") # deleting cookies on logout
         httpResponse.delete_cookie("access")
         httpResponse.delete_cookie("sessionid")
         return httpResponse
     httpResponse = isAuthenticated(request, "home.html", True)
-    print(httpResponse)
     return httpResponse
 
 def signin(request):
@@ -97,15 +89,14 @@ def signin(request):
         if  myform.is_valid():
             try:
                 newuser = User.objects.create_user(
-                username=myform.cleaned_data["username"],
-                email=myform.cleaned_data["email"],
-                password=myform.cleaned_data["password"],)
+                username = myform.cleaned_data["username"],
+                email = myform.cleaned_data["email"],
+                password = myform.cleaned_data["password"],)
                 creds = {
                     "username" : myform.cleaned_data["username"],
                     "password" : myform.cleaned_data["password"]
                 }
-                tokenEndpoint = request.META["HTTP_ORIGIN"]
-                httpResponse = setTokens(request,tokenEndpoint,creds)
+                httpResponse = setTokens(request, request.META["HTTP_ORIGIN"], creds)
                 return httpResponse
             except:
                 return HttpResponse("User already exists")

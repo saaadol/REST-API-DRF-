@@ -11,9 +11,8 @@ def getTodos(request, pk):
         data = Data.objects.get(pk=pk)
     except Data.DoesNotExist:
         raise NotFound("key not found")
-    todos = data.todos.all()
     todos_list = []
-    for todo in todos:
+    for todo in data.todos.all():
         todo_values = {
             'todoName': todo.todoName,
             'description': todo.description,
