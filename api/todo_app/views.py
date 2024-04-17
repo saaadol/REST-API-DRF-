@@ -6,11 +6,10 @@ import requests
 import json
 from django.contrib import messages
 
-
 def isAuthenticated(request, path, isRender): #isAuthenticated
     if  request.COOKIES.get("refresh") == None: 
         return False
-    flag = 0
+    isnotAccess = 0
     tokenEndpoint = request.META["HTTP_HOST"]
     if  request.COOKIES.get("access") != None:
         
@@ -18,7 +17,7 @@ def isAuthenticated(request, path, isRender): #isAuthenticated
             "token" : request.COOKIES.get("access")
         }
     else:
-        flag = 1
+        isnotAccess = 1
         token = {
             "token" : request.COOKIES.get("refresh")
         }
@@ -27,9 +26,8 @@ def isAuthenticated(request, path, isRender): #isAuthenticated
     if isValid.status_code != 200:
         return False
     
-    if flag == 1:
-        if isRender:
-            
+    if isnotAccess == 1:
+        if isRender:            
             httpResponse = render(request,path)
         else:
             httpResponse = redirect(path)

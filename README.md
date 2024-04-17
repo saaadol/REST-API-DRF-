@@ -3,7 +3,7 @@ This is a REST API project in django for TodoList project developed in django
 
 # Instalation
 To install, just run this command to install all required libraries <br>
-```pip install -r requirements``` <br>
+```pip install -r requirements.txt``` <br>
 # Usage
 ``` cd api/ ``` <br>
 ``` py manage.py runserver ```<br>
