@@ -2,10 +2,8 @@
 This is a REST API project in django for TodoList project developed in django 
 
 # Instalation
-For Unix-based systems: <br>
-```source myenv/bin/activate``` <br>
-For Windows system: <br>
-```./myenv/Scripts/activate``` <br>
+To install, just run this command to install all required libraries <br>
+```pip install -r requirements``` <br>
 # Usage
 ``` cd api/ ``` <br>
 ``` py manage.py runserver ```<br>
@@ -18,8 +16,8 @@ To login : ``` 127.0.0.1/login/ ``` <br>
 To Home : ``` 127.0.0.1/home/ ``` <br>
 To insert new user : ``` 127.0.0.1/insert/ ``` <br>
 To insert new user Todo : ``` 127.0.0.1/insert/todo/ ``` <br>
-To update user  : ``` 127.0.0.1/insert/1/ ``` <br> (You can change the id of user)
-To delete user : ``` 127.0.0.1/delete/1/ ``` <br> (You can change the id of user)
+To update user  : ``` 127.0.0.1/insert/1/ ``` (You can change the id of user) <br>
+To delete user : ``` 127.0.0.1/delete/1/ ``` (You can change the id of user) <br> 
 To delete all :  ``` 127.0.0.1/delete/all/ ``` <br>
 ### API Endpoints
 API Token Endpoint : ``` 127.0.0.1/api/token/ ``` <br>
