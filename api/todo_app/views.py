@@ -6,38 +6,38 @@ import requests
 import json
 from django.contrib import messages
 
-def isAuthenticated(request, path, isRender): #isAuthenticated
-    if  request.COOKIES.get("refresh") == None: 
-        return False
+def returnToken(Cookies):
     isnotAccess = 0
-    tokenEndpoint = request.META["HTTP_HOST"]
-    if  request.COOKIES.get("access") != None:
-        
+    if  Cookies.get("access") != None:
         token = {
-            "token" : request.COOKIES.get("access")
+            "token" : Cookies.get("access")
         }
     else:
         isnotAccess = 1
         token = {
-            "token" : request.COOKIES.get("refresh")
+            "token" : Cookies.get("refresh")
         }
-
+    yield token
+    yield isnotAccess
+def isAuthenticated(request, path, isRender): #isAuthenticated
+    if  request.COOKIES.get("refresh") == None: 
+        return False
+    
+    tokenEndpoint = request.META["HTTP_HOST"]
+    tokenObject = returnToken(request.COOKIES)
+    token = next(tokenObject)
     isValid =  requests.post(f"http://{tokenEndpoint}/api/verify/", json=token)
     if isValid.status_code != 200:
         return False
     
-    if isnotAccess == 1:
+    if next(tokenObject) == 1: #next(tokenObject) its the isnotAccess flag
         if isRender:            
-            httpResponse = render(request,path)
+            httpResponse = render(request,path) 
         else:
-            httpResponse = redirect(path)
-        temptoken = {
-            "refresh" : token["token"] 
-        }
-        newAccess = requests.post(f"http://{tokenEndpoint}/api/refresh/", json=temptoken)
+            httpResponse = redirect(path) 
+        newAccess = requests.post(f"http://{tokenEndpoint}/api/refresh/", json={ "refresh" : token["token"]  }) 
         newAccess = newAccess.json()
         httpResponse.set_cookie("access", newAccess["access"])
-
         return httpResponse
     if isRender:
         return render(request,path)
