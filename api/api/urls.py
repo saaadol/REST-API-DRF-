@@ -21,17 +21,18 @@ from todo_app.views import homepage, login , signin
 from rest_framework_simplejwt import  views as jwt_views
 
 urlpatterns = [
+    path('', homepage, name="home"),
     path('admin/', admin.site.urls),
-    path('api/all/', getData),
-    path('api/all/<int:pk>/', getTodos),
+    path('api/users/', getData),
+    path('api/users/<int:pk>/', getTodos),
 
     path('signin/', signin),   
     path('login/', login),
     path('home/', homepage, name="home"),
 
-    path('api/insert/', PostData),
-    path('api/insert/todo/', PostTodo),
-    path('api/insert/<int:pk>/', PostDataId),
+    path('api/addUser/', PostData),
+    path('api/addTodo/', PostTodo),
+    path('api/updateUser/<int:pk>/', PostDataId),
     path('api/delete/<int:pk>/', DeleteDataId),
     path('api/delete/all/', DeleteAll),
     
