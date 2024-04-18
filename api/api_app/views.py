@@ -62,15 +62,15 @@ def PostTodo(request):
 
 @api_view(["GET","PUT"])   
 def PostDataId(request, pk):
-    olddata = Data.objects.get(id = pk) 
+    try:
+        olddata = Data.objects.get(id = pk) 
+    except:
+        return Response("id not available", status=400)
     serializer = DataSerializer(olddata, data = request.data)
     
     if serializer.is_valid():
-        if (olddata.check_pass(serializer.initial_data["password"])):
-            serializer.save()
-            return Response(serializer.data, status=201)
-        else:
-            return Response("Not correct Password",  status=403)
+        serializer.save()
+        return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
 
 

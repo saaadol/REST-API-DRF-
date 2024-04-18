@@ -32,3 +32,25 @@ class AddUserTest(TestCase):
                 self.assertEqual(self.getAllUsers.data[0]["username"], "TestingGetUser") # Checking if the username is correct
             else:
                 self.assertEqual(self.getAllUsers.data[i]["username"], f"User{i}") # Checking if the username is correct
+    
+    def test_deleteUser(self):
+        
+        self.deleteUser = self.client.delete(f'/api/delete/{self.objectTestId}/', format = 'json')
+        self.noUser = self.client.delete('/api/delete/2/', format = 'json')
+        self.assertEqual(self.deleteUser.status_code, 200)
+        self.assertEqual(self.noUser.status_code, 400)
+    
+
+    # def test_deleteAllUsers(self):
+    #     self.deleteAll = self.client.delete('/api/delete/all', format = 'json')
+    #     self.assertEqual(self.deleteAll.status_code, 201)
+    #     self.assertEqual(len(Data.objects.all()), 0)
+
+    def test_updateUser(self):
+        if Data.objects.filter(username="TestingUser").count() == 0:
+            Data.objects.create(username="TestingUser")
+        self.updateUser = self.client.put(f'/api/updateUser/{self.objectTestId}/', {"username": "lol"}, format = 'json')
+        
+        self.noUser = self.client.put('/api/updateUser/3/', {"username": "TestingUser"}, format = 'json')
+        self.assertEqual(self.updateUser.status_code, 201)
+        self.assertEqual(self.noUser.status_code, 400)
