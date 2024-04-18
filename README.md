@@ -1,7 +1,7 @@
 # REST API
 This is a REST API project in django for TodoList project developed in React 
 
-# Instalation
+# Installation
 To install, just run this command to install all required libraries <br>
 ```pip install -r requirements.txt``` <br>
 # Usage
