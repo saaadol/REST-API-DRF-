@@ -24,6 +24,7 @@ def getTodos(request, pk):
 @api_view(["GET"])
 def getData(request):
     data = Data.objects.all()
+
     serializer = DataSerializer(data, many = True)
     return Response(serializer.data)
 
@@ -39,7 +40,7 @@ def PostData(request):
 @api_view(["POST"])   
 def PostTodo(request): 
     userId =  request.data.get('userid')
-    print("User ID: ", userId)
+
     try:
       user_data = Data.objects.get(username=userId)
     except Data.DoesNotExist:
