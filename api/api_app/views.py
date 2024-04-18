@@ -38,11 +38,26 @@ def PostData(request):
 #Todo
 @api_view(["POST"])   
 def PostTodo(request): 
-    serializer = TodoSerializer(data = request.data)
+    userId =  request.data.get('userid')
+    print("User ID: ", userId)
+    try:
+      user_data = Data.objects.get(username=userId)
+    except Data.DoesNotExist:
+        return Response({"error": "User does not exist."}, status=400)
+    
+    # Update the request data with the actual user ID reference
+    request.data['userid'] = user_data.pk
+
+    serializer = TodoSerializer(data=request.data)    
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+        return Response(serializer.data, status=201) 
+    return Response(serializer.errors, status=400)  
+    # serializer = TodoSerializer(data = request.data)
+    # if serializer.is_valid():
+    #     serializer.save()
+    #     return Response(serializer.data, status=201)
+    # return Response(serializer.errors, status=400)
 
 @api_view(["GET","PUT"])   
 def PostDataId(request, pk):

@@ -15,13 +15,13 @@ from django.contrib.auth.hashers import check_password , make_password
 #         return(check_password(raw_pass, self.password))
     
 class Data(models.Model):
-    username = models.CharField(max_length = 100)
+    username = models.CharField(max_length = 100, unique=True) 
 
     def __str__(self) -> str:
         return self.username
 
 class Todo(models.Model):
-    todoName = models.CharField(max_length = 100)
+    todoName = models.CharField(max_length = 100, primary_key=True)
     description = models.CharField(max_length = 100)
     isCompleted = models.BooleanField()
     userid = models.ForeignKey(Data, related_name='todos', on_delete=models.CASCADE)
