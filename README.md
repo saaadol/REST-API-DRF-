@@ -14,11 +14,11 @@ To get specific User data : ``` 127.0.0.1/api/users/1/ ``` (You can change the i
 To signin : ``` 127.0.0.1/signin/``` <br>
 To login : ``` 127.0.0.1/login/ ``` <br>
 To Home : ``` 127.0.0.1/home/ ``` <br>
-To insert new user : ``` 127.0.0.1/addUser/ ``` <br>
-To insert new user Todo : ``` 127.0.0.1/addTodo/ ``` <br>
-To update user  : ``` 127.0.0.1/updateUser/1/ ``` (You can change the id of user) <br>
-To delete user : ``` 127.0.0.1/delete/1/ ``` (You can change the id of user) <br> 
-To delete all :  ``` 127.0.0.1/delete/all/ ``` <br>
+To insert new user : ``` 127.0.0.1/api/addUser/ ``` <br>
+To insert new user Todo : ``` 127.0.0.1/api/addTodo/ ``` <br>
+To update user  : ``` 127.0.0.1/api/updateUser/1/ ``` (You can change the id of user) <br>
+To delete user : ``` 127.0.0.1/api/delete/1/ ``` (You can change the id of user) <br> 
+To delete all :  ``` 127.0.0.1/api/delete/all/ ``` <br>
 ### API Endpoints
 API Token Endpoint : ``` 127.0.0.1/api/token/ ``` <br>
 API refresh Endpoint : ``` 127.0.0.1/api/refresh/ ``` <br>
